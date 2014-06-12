@@ -12,5 +12,4 @@ Just...don't. Yet.
 
 Copyright © 2014 Sam Raker (sam.raker@gmail.com)
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License.
