@@ -25,8 +25,9 @@
                         fixed-dir)))
 
 (def valid-files (map #(str directory "/" %)
-                  (filter #(not (nil? (re-matches #"\w+.json"
-                    (last (string/split (str %) #"/")))))
+                  (filter #(not (or (nil? (re-matches #"\w+.json"
+                    (last (string/split (str %) #"/"))))
+                    fs/exists? (str fixed-dir %))
                   (fs/list-dir directory))))
 
 (defn get-lines [f] (string/split (slurp f) #"\n"))
