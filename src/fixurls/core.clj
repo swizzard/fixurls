@@ -7,6 +7,7 @@
     [clojure.data.json :as json]
     )
     (:import [java.net URL])
+    (:gen-class)
   )
 
 (def directory (let [pcp-ts (fs/expand-home "~/PycharmProjects/tweet_stuff")]
@@ -25,9 +26,9 @@
                         fixed-dir)))
 
 (def valid-files (map #(str directory "/" %)
-                  (filter #(not (or (nil? (re-matches #"\w+.json"
+                  (filter #(not (and (nil? (re-matches #"\w+.json"
                     (last (string/split (str %) #"/"))))
-                    fs/exists? (str fixed-dir %))
+                    fs/exists? (str fixed-directory %)))
                   (fs/list-dir directory))))
 
 (defn get-lines [f] (string/split (slurp f) #"\n"))
@@ -70,7 +71,9 @@
                                     (let [fixed (fix-all-domains urls-fixed)]
                                   (string/join "\n" fixed)))))
 
-(defn process-file [in-file] (spit (get-fixed-name in-file)
-                              (update-file in-file)))
+(defn process-file [in-file] (do (println (str in-file)) (spit (get-fixed-name in-file)
+                              (update-file in-file))))
 
-(defn -main [] (map process-file valid-files))
+(defn process-files [] (dorun (map process-file valid-files)))
+
+(defn -main [] (do (println "Hello, world!") (process-files)))

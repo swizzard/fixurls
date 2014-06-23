@@ -9,12 +9,6 @@
                   [me.raynes/fs "1.4.4"]
                   ]
   :plugins [[lein-gorilla "0.2.0"]]
-  :injections [(require 'clojure.pprint)]
-  :repl-options {
-    :prompt (fn [ns] (str "in " ns "|>>"))
-    :init-ns fixurls.core
-    :init (use 'clojure.repl)
-  }
-  :jvm-opts ["-Xmx4g" "-Xms2g" "-Xss1g" "-server"]
-  :main fixurls.core
+  ; :jvm-opts ["-Xmx4g" "-Xms2g" "-Xss1g" "-server"]
+  :main ^:skip-aot fixurls.core
   )
