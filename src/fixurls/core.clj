@@ -29,7 +29,7 @@
                     (last (string/split (str %) #"/")))))
                   (fs/list-dir directory))))
 
-(defn get-lines [f] (with-open [fil (io/reader f)]
+(defn get-lines [f] (with-open [fil (io/reader (file f))]
                       (doall (line-seq fil))))
 
 (defn parse-file [f] (map #(json/read-str %) (get-lines f)))
@@ -71,6 +71,6 @@
                                   (string/join "\n" fixed)))))
 
 (defn process-file [in-file] (spit (get-fixed-name in-file)
-                              (update-file in-file)))
+                              (update-file in-file))
 
 (defn -main [] (map (process-file valid-files)))
