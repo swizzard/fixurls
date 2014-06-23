@@ -24,8 +24,9 @@
                           (fs/mkdir fixed-dir))
                         fixed-dir)))
 
-(def valid-files (map #(str directory "/" %) (filter #(not (nil? (re-matches #"\w+.json"
-                                      (last (string/split (str %) #"/")))))
+(def valid-files (map #(str directory "/" %)
+                  (filter #(not (nil? (re-matches #"\w+.json"
+                    (last (string/split (str %) #"/")))))
                   (fs/list-dir directory))))
 
 (defn get-lines [f] (with-open [fil (io/reader f)]
@@ -36,7 +37,7 @@
 (defn expand-urls [urls] (vec (doall (for [url-str urls]
                            (and url-str
                                (try (last (:trace-redirects
-                                              (client/get url-str)))
+                                           (client/get url-str)))
                                 (catch Exception e
                                   (str (first (string/split url-str #"//")) "//"
                                     (first (string/split (.getMessage e) #":"))
@@ -71,10 +72,5 @@
 
 (defn process-file [in-file] (spit (get-fixed-name in-file)
                               (update-file in-file)))
-  ; (let [out-file (io/file (get-fixed-name in-file))]
-  ;
-  ;                               (with-open [f (io/writer out-file)]
-  ;                               (map #(.write f %)
-  ;                                 (update-file in-file)))))
 
 (defn -main [] (map (process-file valid-files)))
