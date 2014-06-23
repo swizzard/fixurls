@@ -16,4 +16,5 @@
     :init (use 'clojure.repl)
   }
   :jvm-opts ["-Xmx4g" "-Xms2g" "-Xss1g" "-server"]
+  :main fixurls.core
   )
