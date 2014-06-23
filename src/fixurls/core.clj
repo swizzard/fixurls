@@ -72,4 +72,4 @@
 (defn process-file [in-file] (spit (get-fixed-name in-file)
                               (update-file in-file)))
 
-(defn -main [] (map (process-file valid-files)))
+(defn -main [] (map process-file valid-files))
