@@ -25,11 +25,13 @@
                           (fs/mkdir fixed-dir))
                         fixed-dir)))
 
+(defn file-is-valid [fname] (let [file-name (str (fs/name fname) ".json")]
+                              (or (nil? (re-matches #"\w+.json" file-name))
+                                  (fs/exists?
+                                    (str fixed-directory "/" file-name)))))
+
 (def valid-files (map #(str directory "/" %)
-                  (filter #(not (and (nil? (re-matches #"\w+.json"
-                    (last (string/split (str %) #"/"))))
-                    fs/exists? (str fixed-directory %)))
-                  (fs/list-dir directory))))
+                  (remove file-is-valid (fs/list-dir directory))))
 
 (defn get-lines [f] (string/split (slurp f) #"\n"))
 
