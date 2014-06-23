@@ -9,9 +9,9 @@
     (:import [java.net URL])
   )
 
-(def directory (let [pcp (fs/expand-home "~/PycharmProjects")]
+(def directory (let [pcp-ts (fs/expand-home "~/PycharmProjects/tweet_stuff")]
                   (if (fs/exists? pcp)
-                    (str pcp "/tweet_stuff/extracted2")
+                    (str pcp-ts "extracted2")
                     (fs/expand-home "~/tweet_stuff/extracted2"))))
 
 (def fixed-directory (let [fixed-dir (string/join "/" (conj (pop (string/split
