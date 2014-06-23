@@ -11,12 +11,13 @@
 
 (def directory (let [pcp-ts (fs/expand-home "~/PycharmProjects/tweet_stuff")]
                   (if (fs/exists? pcp-ts)
-                    (str pcp-ts "extracted2")
+                    (str pcp-ts "/extracted2")
                     (fs/expand-home "~/tweet_stuff/extracted2"))))
 
-(def fixed-directory (let [fixed-dir (string/join "/" (conj (pop (string/split
-                                                            directory #"/"))
-                                                        "fixed"))]
+(def fixed-directory (let [fixed-dir (string/join "/"
+                                      (conj (pop (string/split (str directory)
+                                                  #"/"))
+                                        "fixed"))]
                       (do
                         (or
                           (fs/exists? fixed-dir)
