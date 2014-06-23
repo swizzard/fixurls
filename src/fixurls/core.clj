@@ -10,7 +10,7 @@
   )
 
 (def directory (let [pcp-ts (fs/expand-home "~/PycharmProjects/tweet_stuff")]
-                  (if (fs/exists? pcp)
+                  (if (fs/exists? pcp-ts)
                     (str pcp-ts "extracted2")
                     (fs/expand-home "~/tweet_stuff/extracted2"))))
 
