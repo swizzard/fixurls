@@ -58,29 +58,34 @@
 (defn update-domains [js-line] (assoc-in js-line [1 0 "domains"]
                                 (get-domains (get-in js-line [1 0 "urls"]))))
 
+(def idx (atom 0))
+
 (defn update-both [js-line] (let [fixed (update-domains (update-urls js-line))]
-                              fixed))
+                              (do (println (str "fixing line " (swap! idx inc)))
+                                  fixed)))
 
 (defn get-fixed-name [fname] (let [splt (string/split (str fname) #"/")]
                               (str fixed-directory "/" (last splt))))
 
-(defn fix-all-urls [lines] (let [fixed (map update-urls lines)] fixed))
-
-(defn fix-all-domains [lines] (let [fixed (map update-domains lines)] fixed))
-
+; (defn fix-all-urls [lines] (let [fixed (map update-urls lines)] fixed))
+;
+; (defn fix-all-domains [lines] (let [fixed (map update-domains lines)] fixed))
+;
 ; (defn update-file [in-file] (let [lines (parse-file in-file)]
 ;                                   (let [urls-fixed (fix-all-urls lines)]
 ;                                     (let [fixed (fix-all-domains urls-fixed)]
 ;                                   (string/join "\n" fixed)))))
 
-(defn update-file [in-file] (let [idx (atom 0)]
-                              (for [line (parse-file in-file)]
-                                (do (println (str "fixing line "
-                                              (swap! idx inc)))
-                                    (update-both line)))))
 
-(defn process-file [in-file] (do (println (str in-file)) (spit (get-fixed-name in-file)
-                              (update-file in-file))))
+
+(defn update-file [in-file] (let [lines (parse-file in-file)]
+                              (doall (map update-both lines))))
+
+
+(defn process-file [in-file] (do (println (str in-file))
+                              (spit (get-fixed-name in-file)
+                                (update-file in-file))
+                              (reset! idx 0)))
 
 (defn process-files [] (dorun (map process-file valid-files)))
 
