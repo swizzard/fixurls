@@ -68,10 +68,16 @@
 
 (defn fix-all-domains [lines] (let [fixed (map update-domains lines)] fixed))
 
-(defn update-file [in-file] (let [lines (parse-file in-file)]
-                                  (let [urls-fixed (fix-all-urls lines)]
-                                    (let [fixed (fix-all-domains urls-fixed)]
-                                  (string/join "\n" fixed)))))
+; (defn update-file [in-file] (let [lines (parse-file in-file)]
+;                                   (let [urls-fixed (fix-all-urls lines)]
+;                                     (let [fixed (fix-all-domains urls-fixed)]
+;                                   (string/join "\n" fixed)))))
+
+(defn update-file [in-file] (let [idx (atom 0)]
+                              (for [line (parse-file in-file)]
+                                (do (println (str "fixing line "
+                                              (swap! idx inc)))
+                                    (update-both line)))))
 
 (defn process-file [in-file] (do (println (str in-file)) (spit (get-fixed-name in-file)
                               (update-file in-file))))

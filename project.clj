@@ -9,6 +9,6 @@
                   [me.raynes/fs "1.4.4"]
                   ]
   :plugins [[lein-gorilla "0.2.0"]]
-  ; :jvm-opts ["-Xmx4g" "-Xms2g" "-Xss1g" "-server"]
+  :jvm-opts ["-Xmx4g" "-Xms2g" "-Xss1g" "-server"]
   :main ^:skip-aot fixurls.core
   )
