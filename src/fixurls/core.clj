@@ -58,11 +58,8 @@
 (defn update-domains [js-line] (assoc-in js-line [1 0 "domains"]
                                 (get-domains (get-in js-line [1 0 "urls"]))))
 
-(def idx (atom 0))
-
 (defn update-both [js-line] (let [fixed (update-domains (update-urls js-line))]
-                              (do (println (str "fixing line " (swap! idx inc)))
-                                  fixed)))
+                                  fixed))
 
 (defn get-fixed-name [fname] (let [splt (string/split (str fname) #"/")]
                               (str fixed-directory "/" (last splt))))
@@ -84,9 +81,8 @@
 
 (defn process-file [in-file] (do (println (str in-file))
                               (spit (get-fixed-name in-file)
-                                (update-file in-file))
-                              (reset! idx 0)))
+                                (update-file in-file))))
 
-(defn process-files [] (dorun (map process-file valid-files)))
+(defn process-files [] (dorun (pmap process-file valid-files)))
 
 (defn -main [] (do (println "Hello, world!") (process-files)))
