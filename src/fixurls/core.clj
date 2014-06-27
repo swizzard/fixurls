@@ -73,15 +73,13 @@
 ;                                     (let [fixed (fix-all-domains urls-fixed)]
 ;                                   (string/join "\n" fixed)))))
 
-
-
 (defn update-file [in-file] (let [lines (parse-file in-file)]
                               (doall (map update-both lines))))
 
 
 (defn process-file [in-file] (do (println (str in-file))
                               (spit (get-fixed-name in-file)
-                                (update-file in-file))))
+                                (string/join "\n" (update-file in-file)))))
 
 (defn process-files [] (dorun (pmap process-file valid-files)))
 
