@@ -73,14 +73,23 @@
 ;                                     (let [fixed (fix-all-domains urls-fixed)]
 ;                                   (string/join "\n" fixed)))))
 
+(def str-agent (agent {}))
+
+(defn watch-write [k i o n] (let [in-file (:f n) out-str (:s n)]
+                              (do (println in-file)
+                                (spit (get-fixed-name in-file) out-str))))
+
 (defn update-file [in-file] (let [lines (parse-file in-file)]
                               (doall (map update-both lines))))
 
 
 (defn process-file [in-file] (do (println (str in-file))
-                              (spit (get-fixed-name in-file)
-                                (string/join "\n" (update-file in-file)))))
+                              (send-off str-agent assoc
+                                :f in-file
+                                :s (string/join "\n" (update-file in-file)))))
 
 (defn process-files [] (dorun (pmap process-file valid-files)))
 
-(defn -main [] (do (println "Hello, world!") (process-files)))
+(defn -main [] (do  (println "Hello, world!")
+                    (add-watch str-agent :writer watch-write)
+                    (process-files)))
