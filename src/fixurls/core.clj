@@ -75,7 +75,7 @@
 
 (def str-agent (agent nil))
 
-(defn wrtr [m] (let [in-file (:f m) out-data (:d m)]
+(defn wrtr [a m] (let [in-file (:f m) out-data (:d m)]
                   (spit (get-fixed-name in-file) (string/join "\n" out-data))))
 
 (defn update-file [in-file] (let [lines (parse-file in-file)]
